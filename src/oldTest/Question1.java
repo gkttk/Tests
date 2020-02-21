@@ -1,18 +1,36 @@
 import api.LettersAnswer;
 
+import java.io.*;
 import java.util.Arrays;
+import java.util.Random;
 
 
 public class Question {
 
     private int id;
-    private String qData;
+    private StringBuilder qData;
     private String pictureUrl;
     private LettersAnswer[] letters;
     private LettersAnswer[] correctAnswers;
 
-    Question(String qData, String pictureUrl, int numberOfAnswers, LettersAnswer...correctAnswers) {
-        this.qData = qData;
+    Question(String pictureUrl, int numberOfAnswers, LettersAnswer...correctAnswers) {
+        Random rand = new Random();
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("questions/Question_" + (rand.nextInt(9)+1) + ".txt"));
+            String str = reader.readLine();
+            while(str != null) {
+                this.qData.append(str);
+                str = reader.readLine();
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Отсутствует файл");
+        }catch (IOException e) {
+            System.out.println("Ошибка ввода-вывода");
+
+
+
+
+
         this.pictureUrl = pictureUrl;
         this.id = (int) (Math.random() * 10) + qData.length();
         letters = Arrays.copyOf(LettersAnswer.values(), numberOfAnswers);
